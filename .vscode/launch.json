@@ -4,12 +4,20 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
     {
-        "name": "Launch Chrome",
+        "name": "Chrome: Course Info",
         "request": "launch",
         "type": "pwa-chrome",
         "url": "http://localhost:3001",
-        "webRoot": "${workspaceFolder}"
+        "webRoot": "${workspaceFolder}/part1/courseinfo"
+    },
+    {
+        "name": "Chrome: Notes",
+        "request": "launch",
+        "type": "pwa-chrome",
+        "url": "http://localhost:3002",
+        "webRoot": "${workspaceFolder}/part2/collections"
     }
     ]
 }
