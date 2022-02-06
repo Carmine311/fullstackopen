@@ -1,43 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: 'Arto Hellas' }])
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+  const [persons, setPersons] = useState([])
   const [filter, setFilter] = useState('')
 
-  const handleNewNameChange = (event) => {
-    setNewName(event.target.value)
+  const getPersonsHook = () => {
+    console.log('Getting persons...')
+    axios.get("http://localhost:3005/persons")
+    .then(response => {
+      console.log('Promise fulfilled')
+      setPersons(response.data)
+    })
   }
 
-  const handleNewNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
+  useEffect(getPersonsHook, [])
+
+  
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
 
-  const handleAddPerson = (event) => {
-    event.preventDefault()
+  const handleAddPerson = (newPerson) => {
+    const newName = newPerson.name.trim()
 
     if (
-      persons.find((p) => p.name.toLowerCase() === newName.trim().toLowerCase())
+      persons.find((p) => p.name.toLowerCase() === newName.toLowerCase())
     ) {
       alert(`${newName} is already added to the phonebook`)
-      return
-    }
-
-    const newPerson = {
-      name: newName.trim(),
-      number: newNumber.trim(),
+      return false
     }
 
     setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+    return true
   }
 
   const personsToDisplay =
@@ -55,10 +53,6 @@ const App = () => {
       </div>
       <PersonForm
         header="Add a Person"
-        newName={newName}
-        newNumber={newNumber}
-        newNameHandler={handleNewNameChange}
-        newNumberHandler={handleNewNumberChange}
         addPersonHandler={handleAddPerson}
       />
       <PersonList header="Numbers" persons={personsToDisplay} />
