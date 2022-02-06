@@ -18,8 +18,6 @@ const App = () => {
 
   useEffect(getPersonsHook, [])
 
-  
-
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
