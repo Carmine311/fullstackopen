@@ -1,15 +1,15 @@
-import React from 'react'
-import Person from './Person'
+import React from "react";
+import Person from "./Person";
 
-const PersonList = (props) => {
+const PersonList = ({ header, persons, deletePerson }) => {
   return (
     <div>
-      <h2>{props.header}</h2>
-      {props.persons.map((p) => (
-        <Person key={p.name} person={p} />
+      <h2>{header}</h2>
+      {persons.map((p) => (
+        <Person key={p.name} person={p} deletePerson={deletePerson} />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default PersonList
+export default PersonList;

@@ -1,50 +1,55 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import PersonForm from './components/PersonForm'
-import PersonList from './components/PersonList'
-import personService from './services/phoneBookService'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import PersonForm from "./components/PersonForm";
+import PersonList from "./components/PersonList";
+import personService from "./services/phoneBookService";
 
 const App = () => {
-  const [persons, setPersons] = useState([])
-  const [filter, setFilter] = useState('')
+  const [persons, setPersons] = useState([]);
+  const [filter, setFilter] = useState("");
 
   const getPersonsHook = () => {
-    console.log('Getting persons...')
-    personService.getAll()
-    .then(data => {
-      setPersons(data)
-    })
-  }
+    console.log("Getting persons...");
+    personService.getAll().then((data) => {
+      setPersons(data);
+    });
+  };
 
-  useEffect(getPersonsHook, [])
+  useEffect(getPersonsHook, []);
 
   const handleFilterChange = (event) => {
-    setFilter(event.target.value)
-  }
+    setFilter(event.target.value);
+  };
 
   const handleAddPerson = (newPerson) => {
-    const newName = newPerson.name.trim()
+    const newName = newPerson.name.trim();
 
-    if (
-      persons.find((p) => p.name.toLowerCase() === newName.toLowerCase())
-    ) {
-      alert(`${newName} is already added to the phonebook`)
-      return false
+    if (persons.find((p) => p.name.toLowerCase() === newName.toLowerCase())) {
+      alert(`${newName} is already added to the phonebook`);
+      return false;
     }
 
     personService
       .create(newPerson)
       .then((data) => setPersons(persons.concat(data)));
-    
-    return true
-  }
+
+    return true;
+  };
+
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .delete(person.id)
+        .then(() => setPersons(persons.filter((p) => p.id !== person.id)));
+    }
+  };
 
   const personsToDisplay =
     filter.length > 0
       ? persons.filter((p) =>
-          p.name.toLowerCase().includes(filter.trim().toLowerCase()),
+          p.name.toLowerCase().includes(filter.trim().toLowerCase())
         )
-      : persons
+      : persons;
 
   return (
     <div>
@@ -52,13 +57,14 @@ const App = () => {
       <div>
         Filter shown with <input value={filter} onChange={handleFilterChange} />
       </div>
-      <PersonForm
-        header="Add a Person"
-        addPersonHandler={handleAddPerson}
+      <PersonForm header="Add a Person" addPersonHandler={handleAddPerson} />
+      <PersonList
+        header="Numbers"
+        persons={personsToDisplay}
+        deletePerson={deletePerson}
       />
-      <PersonList header="Numbers" persons={personsToDisplay} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
