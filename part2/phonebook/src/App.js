@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
+import personService from './services/phoneBookService'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -9,10 +10,9 @@ const App = () => {
 
   const getPersonsHook = () => {
     console.log('Getting persons...')
-    axios.get("http://localhost:3005/persons")
-    .then(response => {
-      console.log('Promise fulfilled')
-      setPersons(response.data)
+    personService.getAll()
+    .then(data => {
+      setPersons(data)
     })
   }
 
@@ -32,7 +32,10 @@ const App = () => {
       return false
     }
 
-    setPersons(persons.concat(newPerson))
+    personService
+      .create(newPerson)
+      .then((data) => setPersons(persons.concat(data)));
+    
     return true
   }
 
