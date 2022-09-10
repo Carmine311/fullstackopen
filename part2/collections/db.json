@@ -10,7 +10,7 @@
       "id": 2,
       "content": "Browser can execute only JavaScript",
       "date": "2019-05-30T18:39:34.091Z",
-      "important": false
+      "important": true
     },
     {
       "id": 3,
@@ -21,7 +21,7 @@
     {
       "content": "POST a new note!",
       "date": "2022-02-06T04:05:29.752Z",
-      "important": true,
+      "important": false,
       "id": 4
     },
     {
@@ -53,6 +53,12 @@
       "date": "2022-02-06T23:29:56.361Z",
       "important": false,
       "id": 9
+    },
+    {
+      "content": "Testing",
+      "date": "2022-09-05T15:07:04.965Z",
+      "important": true,
+      "id": 11
     }
   ]
 }

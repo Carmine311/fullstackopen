@@ -16,6 +16,7 @@ const create = (newObject) =>
   axios.post(baseUrl, newObject).then((response) => response.data);
 
 const update = (id, newObject) =>
-  axios.put(`${baseUrl}/${id}`, newObject).then((response) => response.data);
+  axios.put(`${baseUrl}/${id}`, newObject)
+  .then((response) => response.data);
 
 export default { getAll, create, update };

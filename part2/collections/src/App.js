@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import noteService from "./services/notes";
 import NoteList from "./components/NoteList";
+import Notification from "./components/Notification";
 
 const App = (props) => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("...a new note");
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const hook = () => {
     noteService.getAll().then((notes) => {
@@ -42,8 +44,11 @@ const App = (props) => {
       setNotes(notes.map((note) => (note.id !== id ? note : updatedNote)));
     })
     .catch(error => {
-      alert(`The note ${note.content} was already deleted from the server`)
+      setErrorMessage(`The note ${note.content} was already deleted from the server`);
       setNotes(notes.filter(n => n.id !== id))
+
+      setTimeout(() => setErrorMessage(null)
+      , 5000)
     });
   };
 
@@ -52,16 +57,19 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
+      <div className="body-container">
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? "important" : "all"}
         </button>
       </div>
-      <NoteList notes={notesToShow} toggleImportance={toggleImportance} />
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
+        <NoteList notes={notesToShow} toggleImportance={toggleImportance} />
+        <form onSubmit={addNote}>
+          <input value={newNote} onChange={handleNoteChange} />
+          <button type="submit">save</button>
+        </form>
+      </div>
     </div>
   );
 };
